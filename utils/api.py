@@ -1,18 +1,23 @@
 from requests_oauthlib import OAuth2Session
+import requests
+import json
+from .settings import secrets
 
-client_id = '93a047484029aa73fec6084cf50834fc'
-client_secret = '252b7906d1b9c574d1f79356450d5aaf'
-token_url = 'https://api.codechef.com/oauth/token'
-authorization_url = 'https://api.codechef.com/oauth/authorize'
-
-chef = OAuth2Session(client_id)
-access_url, state = chef.authorization_url(authorization_url)
-print('Please go here and authorize,', authorization_url)
-redirect_response = input('Paste the full redirect URL here:')
-
-code = 
-
-chef.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
-
-r = chef.get('https://api.codechef.com/contests')
-print(r.content)
+def new_oauth2_token():
+        
+	chef = OAuth2Session(secrets.client_id)
+	access_url, state = chef.authorization_url(secrets.authorization_url)
+	print('Please go here and authorize,', access_url)
+	redirect_response = input('Paste the output shown on redirected URL here:')
+	headers = {
+			'content-Type': 'application/json',
+	}
+	data = {
+			'grant_type': 'authorization_code',
+			'code': redirect_response,
+			'client_id': secrets.client_id,
+			'client_secret': secrets.client_secret,
+	}
+	response = requests.post(secrets.token_url, data=json.dumps(data), headers=headers)
+	
+	write_response_to_file(response)
