@@ -23,3 +23,22 @@ def new_oauth2_token():
 	response = requests.post(secrets.TOKEN_URL, data=json.dumps(data), headers=headers)
 	
 	write_response_to_file(response.json())
+
+def refresh_oauth2_token():
+
+	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
+		sensitive_data = json.load(infile)
+
+	headers = {
+			'content-Type': 'application/json',
+	}
+	data = {
+			'grant_type': 'refresh_token' ,
+			'refresh_token': sensitive_data['result']['data']['refresh_token'],
+			'client_id': secrets.CLIENT_ID,
+			'client_secret': secrets.CLIENT_SECRET,
+	}
+	response = requests.post(secrets.TOKEN_URL, data=json.dumps(data), headers=headers)
+
+	write_response_to_file(response.json())
+
