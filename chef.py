@@ -11,6 +11,10 @@ def init():
 	"""Get and store tokens for api calls."""
 	if utils.check_if_initialized():
 		click.echo('You have already initialized the application.')
-    	click.echo('Please run \"chef reinit\" to reinitialize the application.')
+		click.echo('Please run \"chef reinit\" to reinitialize the application.')
 	else:
 		api.new_oauth2_token()
+
+@cli.command()
+def contests():
+	api.get_contests_list()		

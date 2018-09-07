@@ -42,3 +42,13 @@ def refresh_oauth2_token():
 
 	write_response_to_file(response.json())
 
+def get_contests_list():
+	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
+		sensitive_data = json.load(infile)
+	headers = {
+			'content-Type': 'application/json',
+			'Authorization': 'Bearer ' + sensitive_data['result']['data']['access_token']
+	}
+	contest_list_endpoint = secrets.API_ENDPOINT + 'contests'
+	response = requests.get(contest_list_endpoint, headers=headers)
+
