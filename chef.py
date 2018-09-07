@@ -5,7 +5,8 @@ from chef_helpers import api
 @click.group()
 def cli():
 	if utils.check_if_initialized():
-		utils.check_if_token_expired()
+		if utils.check_if_token_expired():
+			api.refresh_oauth2_token()
 
 @cli.command()
 def init():

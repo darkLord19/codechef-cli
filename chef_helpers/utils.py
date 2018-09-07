@@ -45,4 +45,5 @@ def check_if_token_expired():
 		time_conf = json.load(infile)
 
 	if time_conf['expiration_time'] < time.time():
-		refresh_oauth2_token()
+		return True
+	return False
