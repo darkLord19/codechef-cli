@@ -1,5 +1,6 @@
 import click
-from chef_helpers import *
+from chef_helpers import utils
+from chef_helpers import api
 
 @click.group()
 def cli():

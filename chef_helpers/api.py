@@ -1,8 +1,8 @@
 from requests_oauthlib import OAuth2Session
 import requests
 import json
-from settings import secrets
-from utils import write_response_to_file
+from .utils import write_response_to_file
+from .settings import secrets
 
 def new_oauth2_token():
         

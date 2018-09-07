@@ -1,7 +1,8 @@
 import os
 import errno
 import json
-from settings import secrets
+from pathlib import Path
+from .settings import secrets
 
 def write_response_to_file(json_response):
     if not os.path.exists(os.path.dirname(secrets.LINUX_CONFIG_PATH)):
@@ -15,6 +16,7 @@ def write_response_to_file(json_response):
         json.dump(json_response, outfile, indent=4)
 
 def check_if_initialized():
-    if os.path.exists(os.path.dirname(secrets.LINUX_CONFIG_PATH)):
-		return True
-	return False
+    if Path(secrets.LINUX_CONFIG_PATH).is_file():
+	    return True
+
+    return False
