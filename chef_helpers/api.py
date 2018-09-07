@@ -2,6 +2,7 @@ from requests_oauthlib import OAuth2Session
 import requests
 import json
 from .utils import write_response_to_file
+from .utils import write_timeconf_to_file
 from .settings import secrets
 
 def new_oauth2_token():
@@ -23,6 +24,7 @@ def new_oauth2_token():
 	response = requests.post(secrets.TOKEN_URL, data=json.dumps(data), headers=headers)
 	
 	write_response_to_file(response.json())
+	write_timeconf_to_file(response.json())
 
 def refresh_oauth2_token():
 
@@ -41,6 +43,7 @@ def refresh_oauth2_token():
 	response = requests.post(secrets.TOKEN_URL, data=json.dumps(data), headers=headers)
 
 	write_response_to_file(response.json())
+	write_timeconf_to_file(response.json())
 
 def get_contests_list():
 	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:

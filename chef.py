@@ -4,7 +4,8 @@ from chef_helpers import api
 
 @click.group()
 def cli():
-	pass
+	if utils.check_if_initialized():
+		utils.check_if_token_expired()
 
 @cli.command()
 def init():
@@ -17,4 +18,4 @@ def init():
 
 @cli.command()
 def contests():
-	api.get_contests_list()		
+	api.get_contests_list()
