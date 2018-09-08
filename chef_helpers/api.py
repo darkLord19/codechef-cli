@@ -3,10 +3,8 @@ import requests
 import json
 from .utils import write_response_to_file
 from .utils import write_timeconf_to_file
+from .utils import is_active
 from .settings import secrets
-
-# To store json file containing access and refresh token
-sensitive_data = ''
 
 def new_oauth2_token():
         
@@ -27,11 +25,12 @@ def new_oauth2_token():
 	response = requests.post(secrets.TOKEN_URL, data=json.dumps(data), headers=headers)
 	
 	write_response_to_file(response.json())
-	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
-		sensitive_data = json.load(infile)
 	write_timeconf_to_file(response.json())
 
 def refresh_oauth2_token():
+	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
+		sensitive_data = json.load(infile)
+
 	headers = {
 			'content-Type': 'application/json',
 	}
@@ -47,6 +46,9 @@ def refresh_oauth2_token():
 	write_timeconf_to_file(response.json())
 
 def get_contests_list():
+	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
+		sensitive_data = json.load(infile)
+
 	headers = {
 			'content-Type': 'application/json',
 			'Authorization': 'Bearer ' + sensitive_data['result']['data']['access_token']
@@ -54,3 +56,15 @@ def get_contests_list():
 	contest_list_endpoint = secrets.API_ENDPOINT + 'contests'
 	response = requests.get(contest_list_endpoint, headers=headers)
 
+	return response.json()
+
+""" 
+Returns list of active contests where each list element is a json object
+"""
+def get_active_contests_list():
+	contests_list = get_contests_list()['result']['data']['content']['contestList']
+	active_contests = []
+	for contest in contests_list:
+		if is_active(contest):
+			active_contests.append(contest)
+	return active_contests

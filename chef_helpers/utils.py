@@ -47,3 +47,9 @@ def check_if_token_expired():
 	if time_conf['expiration_time'] < time.time():
 		return True
 	return False
+
+def is_active(contest):
+	now = time.strftime('%Y-%m-%d %H:%M:%S')
+	if contest['endDate'] > now and contest['startDate'] < now:
+		return True
+	return False

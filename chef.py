@@ -19,4 +19,4 @@ def init():
 
 @cli.command()
 def contests():
-	api.get_contests_list()
+	active_contests = api.get_active_contests_list()
