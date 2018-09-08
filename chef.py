@@ -20,3 +20,20 @@ def init():
 @cli.command()
 def contests():
 	active_contests = api.get_active_contests_list()
+
+@cli.command()
+def rankings():
+	active_contests = api.get_active_contests_list()
+	index = 0
+	idx_max = len(active_contests)-1
+
+	for contest in active_contests:
+		click.echo(str(index) + '. ' + contest['name'] + ' ('+ contest['code'] + ')')
+		index += 1
+	
+	contest_no = click.prompt('Please enter a valid integer between 0 and '+str(idx_max), type=int)
+	
+	while contest_no > idx_max:
+		contest_no = click.prompt('Please enter a valid integer', type=int)
+	
+	rankings = api.get_contest_rankings(active_contests[contest_no])

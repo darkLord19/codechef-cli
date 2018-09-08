@@ -68,3 +68,16 @@ def get_active_contests_list():
 		if is_active(contest):
 			active_contests.append(contest)
 	return active_contests
+
+def get_contest_rankings(contest):
+	with open(secrets.LINUX_CONFIG_PATH, 'r') as infile:
+		sensitive_data = json.load(infile)
+
+	headers = {
+			'content-Type': 'application/json',
+			'Authorization': 'Bearer ' + sensitive_data['result']['data']['access_token']
+	}
+	contest_rankings_endpoint = secrets.API_ENDPOINT + 'rankings/' + contest['code']
+	response = requests.get(contest_rankings_endpoint, headers=headers)
+	
+	return response.json()
